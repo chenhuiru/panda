@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<meta name="author" content="Auelnce,aulence@foxmail.com">
+	<title>Vue的class和style绑定</title>
+	<link rel="shortcut icon" href="../../source/favicon.ico">
+	<link rel="bookmark" href="../../source/favicon.ico">
+	<link rel="stylesheet" href="../plugin/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/common.css">
+	<link rel="stylesheet" href="../css/classAndStyle.css">
+</head>
+<body>
+	<header>
+		<nav>
+			<ul class="breadcrumb">
+				<li><a href="../index.html">首页</a></li>
+				<li class="active">Vue的class和style绑定</li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<article>
+			<h1>Vue的class和style绑定</h1>
+
+			<section id="app-1">
+				<h2 class="section_h2">#app-1：根据数据的布尔值添加class</h2>
+				<p :class="{'text-red':statusTrue, 'fz-34':statusTrue, 'text-underline':statusTrue}">红色的34像素字体，带下划线的段落</p>
+				<p :class="{'text-red':statusTrue, 'fz-34':statusFalse, 'text-underline':statusFalse}">红色字体的段落</p>
+				<p :class="{'text-red':statusFalse, 'fz-34':statusFalse, 'text-underline':statusFalse}">使用默认样式的段落</p>
+			</section>
+
+			<section id="app-2">
+				<h2 class="section_h2">#app-2：通过视图模型里的数据对象添加class</h2>
+				<p :class="styleObject">本段落的class是通过数据定义的，所以不需要花括号</p>
+				<p>这样就可以修改“app2.styleObject["fz-26"]”等“class”（其实是属性）的布尔值来动态添加/移除class了</p>
+				<p>在控制台中输入“app2.styleObject["text-blue"] = false”观察效果</p>
+			</section>
+
+			<section id="app-3">
+				<h2 class="section_h2">#app-3：通过切换class绑定的布尔值添加/移除样式</h2>
+				<div class="hobbyList">
+					<ul>
+						<template  v-for="(hobby, index) in hobbyList">
+							<li :class="{active:hobby.activeStatus}" @click="toggleClass(index)">{{hobby.buttonName}}</li>
+						</template>
+
+					</ul>
+				</div>
+			</section>
+
+			<section id="app-4">
+				<h2 class="section_h2">#app-4：通过计算属性设置class</h2>
+				<div :class="successClass">{{stateText.success}}</div>
+				<div :class="failClass">{{stateText.fail}}</div>
+				<tips class="comment">有时我们需要根据现有的条件（主要是数据模型，即数据源）来判断当前元素的显示状态，可以像这样，通过条件设置的方式来启用或禁用指定的样式类</tips>
+			</section>
+
+			<section id="app-5">
+				<h2 class="section_h2">#app-5：通过点击事件切换状态</h2>
+				<div :class="setFont" v-if="operate" @click="changeState">{{danger}}</div>
+				<div :class="setFont" v-else @click="changeState">{{security}}</div>
+				<tips class="comment">在有些需要切换组件/控件显示状态的场景，可以使用这样的方式。这样的场景有：密码的明文切换、同样位置操作按钮的切换显示、开关功能（可能联动一系列的功能）、登录方式切换等</tips>
+			 </section>
+
+			<section id="app-6">
+				<h2 class="section_h2">#app-6：通过数组设置class</h2>
+				<div :class="[red,fz,fs]">样式组合一</div>
+				<div :class="[fz,fs]">样式组合二</div>
+				<div :class="[red]">样式组合三</div>
+
+				<h3 class="section_h3">通过数组内的三元表达式添加class：</h3>
+				<div :class="[ 5 === 5 ? red : '' ,fz]">使用红色的22像素字体（全部执行）</div>
+				<div :class="[ 5 !== 5 ? red : '' ,fz]">使用红色的22像素字体（只执行字体大小）</div>
+
+				<h3 class="section_h3">通过数组+对象添加class：</h3>
+				<div :class="[{'text-blue': yes}, fs]">使用蓝色的斜体字体（全部执行）</div>
+				<div :class="[{'text-blue': no}, fs]">使用蓝色的斜体字体（只执行斜体）</div>
+
+				<tips class="comment">通过这样的方式使得样式的可控性更强，可以根据实现意图来对数据进行操作或判断，从而实现丰富的样式变换</tips>
+			</section>
+
+			<section id="app-7">
+				<h2 class="section_h2">#app-7：在组件上设置class</h2>
+				<test-class class="text-underline" :prop="prop1"></test-class>
+				<test-class class="fs-italic" :prop="prop2"></test-class>
+				<test-class class="text-fail" :prop="prop3"></test-class>
+				<tips class="comment">最终会将设置在子组件上的样式类和父组件上的样式拼接在一起，如果出现具体样式属性的冲突，会按照原样式表内的权重优先级进行覆盖</tips>
+			</section>
+		</article>
+	</main>
+
+	<script src="../plugin/vue.js"></script>
+	<script src="../js/classAndStyle.js"></script>
+</body>
+</html>
